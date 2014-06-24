@@ -1,0 +1,21 @@
+{
+  "name": "multicastify",
+  "version": "0.0.0",
+  "description": "Proxy multicast/broadcast packets through a highly available pub/sub server.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "broadcast",
+    "multicast",
+    "udp",
+    "redis",
+    "stomp"
+  ],
+  "author": "S. Mikkel Wilson",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "haredis": "~0.2.15"
+  }
+}
