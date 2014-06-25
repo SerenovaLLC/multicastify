@@ -1,22 +1,29 @@
-var os = require('os');
-
-var dgram = require('dgram');
+var os     = require('os');
+var xxhash = require('xxhash');
+var dgram  = require('dgram');
 var socket = dgram.createSocket('udp4'); // IPv6 as config option?
 
-var redis = require('haredis');
-var nodes = ['172.17.8.101:6379','172.17.8.101:6380'];
+var redis  = require('haredis');
+var nodes  = ['172.17.8.101:6379','172.17.8.101:6380'];
 var client = redis.createClient(nodes);
 
 // TODO replace with logging framework
 var log = console.log;
 
-var clientId = os.networkInterfaces().en1[1].address+":"+process.pid;
+var hash = function(str){
+  return xxhash.hash(new Buffer(str), 0xCAFEBEEF);
+}
+
+//var clientId = os.networkInterfaces().en1[1].address+":"+process.pid;
+var clientId = "192.168.1.1:"+process.pid;
 
 // TODO remove. Should come from command line params
-var testMessage = "[hello world] pid: " + process.pid;
+var testMessage = "CCBM;10.200.4.34,6268;heartbeat;role=callmanager;seq=35923;tstamp=1400079606320";
 var multicastAddress = '224.0.0.1';
-var multicastPort = 5554;
+var multicastPort = 48812;
 
+var maxStackSize = 10;
+var sentDatagramStack = [];
 
 client.on('subscribe', function( channel, count ){
  log("subscribed to channel:" + channel ); 
@@ -29,6 +36,7 @@ client.on('message', function( channel, message ){
 
   // ignore messages that this client sent
   if( message.headers.origin != clientId ){
+    sentDatagramStack.push(hash(new Buffer(message.data)));
     socket.send(new Buffer(message.data), 
       0, 
       message.data.length, 
@@ -43,26 +51,37 @@ client.on('message', function( channel, message ){
 });
 
 // TODO port should come from command line parameters
-client.subscribe("port48807");
+client.subscribe("port"+multicastPort);
 
 socket.bind(multicastPort, function() {
-  socket.setMulticastLoopback(false);
+  socket.setMulticastLoopback(true);
+  socket.setBroadcast(false);
   socket.addMembership(multicastAddress);
 });
 
 socket.on("message", function ( data, rinfo ) {
   log("Multicast message received from ", rinfo, ":", data.toString());
-  client.publish(
-    "port48807", 
-    JSON.stringify({ 
-      headers:{
-        origin:clientId
-      },
-      data: data.toString()
-    }));
+
+  // check sent stack
+  var messageIndex = sentDatagramStack.indexOf(hash(data));
+  if( messageIndex < 0 ){
+    // we are not the origin of this message, so we send to redis
+    client.publish(
+      "port"+multicastPort, 
+      JSON.stringify({ 
+        headers:{
+          origin:clientId
+        },
+        data: data.toString()
+      }));
+  } else {
+    // remove the known items
+    sentDatagramStack.splice(messageIndex, 1);
+  }
 });
 
 // send test message to multicast
+sentDatagramStack.push(hash(new Buffer(testMessage)));
 socket.send(new Buffer(testMessage), 
   0, 
   testMessage.length, 
@@ -70,7 +89,7 @@ socket.send(new Buffer(testMessage),
   multicastAddress, 
   function (err) {
     if (err) log(err);
-    log("Multicast message sent");
+    log("Multicast test message sent");
   }
 );
 

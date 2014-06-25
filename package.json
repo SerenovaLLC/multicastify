@@ -16,6 +16,7 @@
   "author": "S. Mikkel Wilson",
   "license": "BSD-2-Clause",
   "dependencies": {
-    "haredis": "~0.2.15"
+    "haredis": "~0.2.15",
+    "xxhash": "~0.2.0"
   }
 }
