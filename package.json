@@ -1,11 +1,14 @@
 {
   "name": "multicastify",
   "version": "0.0.0",
-  "description": "Proxy multicast/broadcast packets through a highly available pub/sub server.",
+  "description": "Proxy multicast/broadcast packets through a highly available pub/sub server such as redis or AMQ.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ENVIRONMENT=dev nodemon --watch src src/index.js"
+    "start": "ENVIRONMENT=dev nodemon --watch lib lib/index.js"
+  },
+  "bin": {
+    "broadcastify": "./bin/broadcastify"
   },
   "keywords": [
     "broadcast",
