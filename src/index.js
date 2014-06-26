@@ -13,9 +13,9 @@ var logger = require('./logger');
 var log    = logger.info;
 
 var hash = function(str){
-  //return xxhash.hash(new Buffer(str+process.pid), 0xCAFEBEEF);
-  var md5 = crypto.createHash('md5');
-  return crypto.createHash('md5').update(str+process.pid).digest("hex");
+  return xxhash.hash(new Buffer(str+process.pid), 0xCAFEBEEF);
+  //var md5 = crypto.createHash('md5');
+  //return crypto.createHash('md5').update(str+process.pid).digest("hex");
 }
 
 //var clientId = os.networkInterfaces().en1[1].address+":"+process.pid;
@@ -95,7 +95,7 @@ socket.on("message", function ( data, rinfo ) {
       }));
   } else {
     // remove the known item 
-    logger.error('removing '+sentDatagramStack[messageIndex]+' from stack');
+    logger.warn('removing '+sentDatagramStack[messageIndex]+' from stack');
     sentDatagramStack.splice(messageIndex, 1);
     log("stack size: "+sentDatagramStack.length);
     while( sentDatagramStack.length > maxStackSize ){
