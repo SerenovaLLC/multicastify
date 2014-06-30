@@ -22,6 +22,7 @@
   "dependencies": {
     "haredis": "~0.2.15",
     "xxhash": "~0.2.0",
-    "winston": "~0.7.3"
+    "winston": "~0.7.3",
+    "nomnom": "~1.8.0"
   }
 }

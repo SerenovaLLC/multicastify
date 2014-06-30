@@ -1,4 +1,58 @@
 #!/usr/bin/env node
-// vim: ft=js
+// vi: ft=javascript
 
-require('../lib/index.js');
+var logger = require('../lib/logger.js');
+
+var opts = {
+  version: {
+    abbr: 'v',
+    help: "Print version and exit.",
+    callback: function(){
+      return require("../package.json").version;
+    }
+  },
+  redisNode: {
+    abbr: 'S',
+    help: "Redis to use as pub/sub. Use option more than once for HA operation.",
+    list: true,
+    metavar: 'IP:PORT',
+    required: true
+  },
+  multicastAddress: {
+    abbr: 'a',
+    help: "Multicast IP address and port to bind (eg. 224.0.0.1:5100). Can be used more than once.",
+    metavar: 'IP:PORT',
+    list: true,
+    required: true
+  }
+};
+
+var nomnom = require('nomnom')
+  .options(opts)
+  .parse();
+
+logger.debug( nomnom );
+
+function splitIpPort(element){
+  var split = element.split(':');
+  // make sure the IP is a dotted quad and the port is a number
+  if( split[0].split('.').length == 4 && parseInt(split[1]) )
+    return {ip: split[0], port: parseInt(split[1])};
+}
+
+
+var conf = {
+  redisNodes: nomnom.redisNode,
+  multicastEndpoints: function(){
+    tmp = [];
+    for( i in nomnom.multicastAddress ){
+      tmp.push( splitIpPort(nomnom.multicastAddress[i]) );
+    };
+    return tmp;
+  }(),
+  foo: "bar"
+};
+
+logger.debug( conf.multicastEndpoints );
+
+require('../lib/index.js')(conf);
