@@ -1,6 +1,6 @@
 {
   "name": "multicastify",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Proxy multicast/broadcast packets through a highly available pub/sub server such as redis or AMQ.",
   "main": "lib/index.js",
   "repository": {
