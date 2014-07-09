@@ -6,6 +6,7 @@ var logger = require('../lib/logger.js');
 var opts = {
   version: {
     abbr: 'v',
+    flag: true,
     help: "Print version and exit.",
     callback: function(){
       return require("../package.json").version;
