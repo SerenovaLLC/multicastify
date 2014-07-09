@@ -10,7 +10,7 @@ Dependencies
 
 Installation
 ------------
-To use the release version, simply run `npm install multicastify -G`. 
+To use the release version, simply run `npm install multicastify -g`. 
 
 To install from source:
  * `npm install git://github.com/codebudo/multicastify.git`
