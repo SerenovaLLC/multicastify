@@ -12,7 +12,7 @@
     "start": "echo \"No start script. Use bin/multicastify tool.\""
   },
   "bin": {
-    "broadcastify": "./bin/broadcastify"
+    "multicastify": "./bin/multicastify"
   },
   "keywords": [
     "broadcast",
