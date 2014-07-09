@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ENVIRONMENT=dev nodemon --watch lib lib/index.js"
+    "start": "echo \"No start script. Use bin/multicastify tool.\""
   },
   "bin": {
     "broadcastify": "./bin/broadcastify"
@@ -22,7 +22,7 @@
     "stomp"
   ],
   "author": "S. Mikkel Wilson",
-  "license": "BSD-2-Clause",
+  "license": "Apache-2.0",
   "dependencies": {
     "haredis": "~0.2.15",
     "xxhash": "~0.2.0",
