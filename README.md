@@ -3,6 +3,8 @@ Multicastify
 
 Multicastify is a multicast proxy that allows the use of multicast in environments that don't generally support it (namely AWS). It works by listening to the multicast loopback, and sending datagrams to a [Redis] pub/sub. Messages received from the Redis pub/sub are replayed on the local loopback. The application is written in node.js and deployed through NPM.
 
+[Multicastify image](docs/multicastify.png)
+
 Dependencies
 ------------
  * Node.js > 0.10.0
@@ -13,7 +15,7 @@ Installation
 To use the release version, simply run `npm install multicastify -g`. 
 
 To install from source:
- * `npm install git://github.com/codebudo/multicastify.git`
+ * `npm install git://github.com/liveops/multicastify.git`
 
 Usage
 -----
@@ -37,7 +39,6 @@ Clustered Redis:
 TODO
 ----
  * IPv6 support
- * Proxy more than one multicast address at a time
  * Change log level as a command line parameter 
  * Port for use with AMQ/ZMQ topics
  * Allow override of the pub/sub channel name from the command line
