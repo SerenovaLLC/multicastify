@@ -3,7 +3,7 @@ Multicastify
 
 Multicastify is a multicast proxy that allows the use of multicast in environments that don't generally support it (namely AWS). It works by listening to the multicast loopback, and sending datagrams to a [Redis] pub/sub. Messages received from the Redis pub/sub are replayed on the local loopback. The application is written in node.js and deployed through NPM.
 
-[Multicastify image](docs/multicastify.png)
+![Multicastify image](docs/multicastify.png?raw=true)
 
 Dependencies
 ------------
