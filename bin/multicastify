@@ -1,7 +1,8 @@
-#!/usr/bin/env node
+#!/usr/bin/env node 
 // vi: ft=javascript
 
-var logger = require('../lib/logger.js');
+var log = require('../lib/logger.js');
+//var log = require('winston');
 
 var opts = {
   version: {
@@ -32,15 +33,18 @@ var nomnom = require('nomnom')
   .options(opts)
   .parse();
 
-logger.debug( nomnom );
+//log.debug( nomnom );
 
 function splitIpPort(element){
   var split = element.split(':');
   // make sure the IP is a dotted quad and the port is a number
   if( split[0].split('.').length == 4 && parseInt(split[1]) )
-    return {ip: split[0], port: parseInt(split[1])};
+    return {
+      ip: split[0], 
+      port: parseInt(split[1]), 
+      channelName: 'port'+split[1] // TODO custom channel names?
+    };
 }
-
 
 var conf = {
   redisNodes: nomnom.redisNode,
@@ -50,10 +54,9 @@ var conf = {
       tmp.push( splitIpPort(nomnom.multicastAddress[i]) );
     };
     return tmp;
-  }(),
-  foo: "bar"
+  }()
 };
 
-logger.debug( conf.multicastEndpoints );
+//log.debug( 'listen to endpoints ' + JSON.stringify(conf.multicastEndpoints) );
 
 require('../lib/index.js')(conf);
