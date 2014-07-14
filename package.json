@@ -1,11 +1,11 @@
 {
   "name": "multicastify",
   "version": "0.1.0",
-  "description": "Proxy multicast/broadcast packets through a highly available pub/sub server such as redis or AMQ.",
+  "description": "Proxy multicast/broadcast packets through a highly available pub/sub server such as Redis or AMQ.",
   "main": "lib/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/codebudo/multicastify.git"
+    "url": "https://github.com/liveops/multicastify.git"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
